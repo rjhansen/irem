@@ -1,11 +1,12 @@
 #include <gtkmm.h>
 #include <SQLiteCpp/SQLiteCpp.h>
 #include <string>
+#include <memory>
 
 class Irem {
     public:
     Irem(Glib::RefPtr<Gtk::Application> application);
-    ~Irem() { delete window; }
+    ~Irem() { }
     Gtk::Window& getWindow() { return *window; }
 
     private:
@@ -14,10 +15,12 @@ class Irem {
     void disconnectFrom();
     void showWorldEditor();
     void showAvatarEditor();
+    void initializeDb();
+    void initializeUi();
     Glib::RefPtr<Gtk::Application> app;
-    Gtk::Window* window;
-    Gtk::MenuItem* avatars;
-    SQLite::Database db;
+    Glib::RefPtr<Gtk::Builder> bldr;
+    std::unique_ptr<SQLite::Database> db;
+    std::unique_ptr<Gtk::Window> window;
 };
 
 bool initializeIrem();
