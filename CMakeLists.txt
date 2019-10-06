@@ -28,7 +28,7 @@ add_definitions(-DPACKAGE_VERSION="${PACKAGE_VERSION}"
                 -DPACKAGE_URL="https://rjhansen.github.io/irem"
                 -DPACKAGE_BUGREPORT="rob@hansen.engineering")
 
-add_executable(irem src/main.cc src/initialize.cc src/ui.cc)
+add_executable(irem src/main.cc src/ui.cc)
 link_directories(${GTKMM_LIBRARY_DIRS})
 include_directories(${GTKMM_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS}
     src ${CMAKE_CURRENT_LIST_DIR}/thirdparty/SQLiteCpp/include)
