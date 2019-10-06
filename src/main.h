@@ -1,21 +1,23 @@
-//HelloWorldWindow.h
+#include <gtkmm.h>
+#include <SQLiteCpp/SQLiteCpp.h>
+#include <string>
 
+class Irem {
+    public:
+    Irem(Glib::RefPtr<Gtk::Application> application);
+    ~Irem() { delete window; }
+    Gtk::Window& getWindow() { return *window; }
 
-#ifndef HELLOWORLDWINDOW_H
-#define HELLOWORLDWINDOW_H
-
-#include <gtkmm/window.h>
-#include <gtkmm/button.h>
-
-// Derive a new window widget from an existing one.
-// This window will only contain a button labelled "Hello World"
-class HelloWorldWindow : public Gtk::Window
-{
-  public:
-    HelloWorldWindow();
-
-  protected:
-    Gtk::Button hello_world;
+    private:
+    void updateUI();
+    void connectTo();
+    void disconnectFrom();
+    void showWorldEditor();
+    void showAvatarEditor();
+    Glib::RefPtr<Gtk::Application> app;
+    Gtk::Window* window;
+    Gtk::MenuItem* avatars;
+    SQLite::Database db;
 };
 
-#endif
+bool initializeIrem();

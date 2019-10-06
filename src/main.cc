@@ -1,32 +1,75 @@
-//main.cc
-
-#include <gtkmm/main.h>
-#include <iostream>
 #include "main.h"
 #include "initialize.h"
+#include <iostream>
+#include <filesystem>
 
-HelloWorldWindow::HelloWorldWindow()
- : hello_world("Hello World")
+using std::filesystem::path;
+using Glib::RefPtr;
+using Gtk::Main;
+using Gtk::Builder;
+using Gtk::Application;
+using Gtk::Window;
+using Gtk::MenuItem;
+using std::string;
+using std::cout;
+using sigc::ptr_fun;
+using sigc::mem_fun;
+
+extern const std::string mainWindowXML;
+extern const string dbPath;
+
+Irem::Irem(RefPtr<Application> application) : app(application),
+    window(nullptr),
+    avatars(nullptr),
+    db(dbPath.c_str(), SQLite::OPEN_READWRITE)
 {
-    // Set the title of the window.
-    set_title("Hello World");
+    auto builder = Builder::create_from_string(mainWindowXML);
+    MenuItem *mi { nullptr };
+    builder->get_widget("MainWindow", window);
 
-    // Add the member button to the window,
-    add(hello_world);
+    builder->get_widget("connect-to", mi);
+    mi->signal_activate().connect(mem_fun(*this, &Irem::connectTo));
 
-    // Handle the 'click' event.
-    hello_world.signal_clicked().connect([] () {
-          std::cout << "Hello world" << std::endl;
-    });
-    // Display all the child widgets of the window.
-    show_all_children();
+    builder->get_widget("quit", mi);
+    mi->signal_activate().connect(mem_fun(*window, &Window::close));
+    
+    builder->get_widget("worlds", mi);
+    mi->signal_activate().connect(mem_fun(*this, &Irem::showWorldEditor));
+
+    builder->get_widget("avatars", avatars);
+    avatars->signal_activate().connect(mem_fun(*this, &Irem::showAvatarEditor));
+}
+
+void Irem::connectTo()
+{
+
+}
+
+void Irem::disconnectFrom()
+{
+
+}
+
+void Irem::showWorldEditor()
+{
+
+}
+
+void Irem::showAvatarEditor()
+{
+
+}
+
+void Irem::updateUI()
+{
+
 }
 
 int main(int argc, char *argv[]) 
 {
     initializeIrem();
-    Gtk::Main kit(argc, argv);
-    HelloWorldWindow example;
-    Gtk::Main::run(example);
+    auto app = Application::create(argc, argv, "engineering.hansen.irem");
+    Irem irem(app);
+    app->run(irem.getWindow());
     return 0;
 }
